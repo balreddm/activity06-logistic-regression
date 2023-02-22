@@ -6,3 +6,32 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+```
+
+
+## Lading dataset
+```{r}
+resume = readr::read_csv("https://www.openintro.org/data/csv/resume.csv")
+resume
+```
+
+
+
+```{r}
+# The {tidymodels} method for logistic regression requires that the response be a factor variable
+resume <- resume %>% 
+  mutate(received_callback = as.factor(received_callback))
+
+resume_mod <- logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(received_callback ~ race, data = resume, family = "binomial")
+
+tidy(resume_mod) %>% 
+  knitr::kable(digits = 3)
+```
+
