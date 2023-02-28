@@ -35,3 +35,19 @@ tidy(resume_mod) %>%
   knitr::kable(digits = 3)
 ```
 
+
+```{r}
+resume_select <- resume %>% 
+  rename(sex = gender) %>% 
+  filter(job_city == "Chicago") %>% 
+  mutate(race = case_when(
+         race == "white" ~ "White",
+         TRUE ~ "Black"
+       ),
+       sex = case_when(
+         sex == "f" ~ "female",
+         TRUE ~ "male"
+       )) %>% 
+  select(received_callback, years_experience, race, sex)
+```
+
